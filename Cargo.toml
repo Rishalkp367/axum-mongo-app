@@ -1,0 +1,36 @@
+[package]
+name = "axum-mongo-app"
+version = "0.1.0"
+edition = "2021"
+authors = ["Rishal K P"]
+description = "Production-ready Axum + MongoDB backend boilerplate"
+license = "MIT"
+repository = "https://github.com/Rishalkp367/axum-mongo-app"
+
+
+[dependencies]
+axum = "0.7"
+tokio = { version = "1", features = ["full"] }
+
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+
+mongodb = "2.8"
+bson = "2"
+
+dotenvy = "0.15"
+
+tower = "0.4"
+tower-http = { version = "0.5", features = ["cors", "trace"] }
+
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+
+uuid = { version = "1", features = ["v4"] }
+thiserror = "1"
+
+futures-util = "0.3"
+
+[[bin]]
+name = "axum-mongo-app"
+path = "src/main.rs"

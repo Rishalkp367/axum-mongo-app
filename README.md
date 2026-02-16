@@ -1,4 +1,9 @@
 # 🦀 Axum Mongo API Boilerplate
+[![CI](https://github.com/Rishalkp367/axum-mongo-app/actions/workflows/ci.yml/badge.svg)](https://github.com/Rishalkp367/axum-mongo-app/actions)
+[![Rust](https://img.shields.io/badge/rust-stable-orange)](#)
+[![Docker](https://img.shields.io/badge/docker-ready-blue)](#)
+[![MongoDB](https://img.shields.io/badge/mongodb-7-green)](#)
+[![License](https://img.shields.io/badge/license-MIT-purple)](#)
 
 A production-ready Rust backend starter built with **Axum**, **MongoDB**, and **Docker** — focused on clean architecture, scalability, and real-world practices.
 

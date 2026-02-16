@@ -1,92 +1,93 @@
-# 🦀 axum-mongo-app
+# 🦀 Axum Mongo API Boilerplate
 
-[![CI](https://github.com/Rishalkp367/axum-mongo-app/actions/workflows/ci.yml/badge.svg)](https://github.com/Rishalkp367/axum-mongo-app/actions)
-[![Rust](https://img.shields.io/badge/rust-stable-orange)](#)
-[![Docker](https://img.shields.io/badge/docker-ready-blue)](#)
-[![MongoDB](https://img.shields.io/badge/mongodb-7-green)](#)
-[![License](https://img.shields.io/badge/license-MIT-purple)](#)
+A production-ready Rust backend starter built with **Axum**, **MongoDB**, and **Docker** — focused on clean architecture, scalability, and real-world practices.
 
-Production-ready Rust backend boilerplate using:
+---
 
-- Axum 0.7
-- Tokio (multithreaded runtime)
-- MongoDB (official async driver)
-- Docker + Docker Compose
-- Health checks (liveness + readiness)
-- Repository pattern
-- Graceful shutdown
+## ✨ Tech Stack
+
+- ⚡ Axum (async Rust web framework)
+- 🧵 Tokio multithreaded runtime
+- 🍃 MongoDB official async driver
+- 🐳 Docker & Docker Compose
+- 📚 Swagger / OpenAPI (utoipa)
+- 📈 Tracing & structured logging
 
 ---
 
 ## 🚀 Features
 
-- Multithreaded async runtime
+- Clean layered architecture (routes, repositories, models)
 - MongoDB connection pooling
-- Clean modular architecture
-- Dockerized environment
-- Health endpoints
-- Example CRUD (Users)
+- Repository pattern
+- Health checks (liveness & readiness)
+- Swagger API documentation
+- Dockerized local development
 - Graceful shutdown (SIGINT + SIGTERM)
-- Production-ready configuration via `.env`
+- Production-friendly configuration via `.env`
 
 ---
 
 ## 📁 Project Structure
 
+```
 src/
+├── app_state.rs
 ├── config.rs
 ├── db.rs
-├── app_state.rs
+├── docs.rs
 ├── models/
-│ └── user_model.rs
 ├── repositories/
-│ └── user_repository.rs
 ├── routes/
-│ ├── health.rs
-│ ├── users.rs
-│ └── mod.rs
+└── main.rs
+```
 
 ---
 
 ## 🧪 Health Endpoints
 
-| Endpoint        | Purpose                 |
-| --------------- | ----------------------- |
-| `/health/live`  | Liveness check          |
-| `/health/ready` | MongoDB readiness check |
+| Endpoint | Description |
+|---------|-------------|
+| `/health/live` | Service liveness |
+| `/health/ready` | MongoDB readiness |
 
 ---
 
-## 🐳 Run With Docker
+## 📚 API Documentation
 
-```bash
-docker-compose up --build
+Swagger UI available at:
 
-API runs at:
-
-http://localhost:3000
-
-
-Test health:
-
-http://localhost:3000/health/live
+```
+http://localhost:3000/docs
 ```
 
 ---
 
-## 🧑‍💻 Run Locally (Without Docker)
+## 🐳 Run with Docker (Recommended)
+
+```bash
+docker compose up --build
+```
+
+API will be available at:
+
+```
+http://localhost:3000
+```
+
+---
+
+## 💻 Run Locally (without Docker)
 
 Make sure MongoDB is running locally.
 
 ```bash
-
 cargo run
-
 ```
 
 ---
 
-## 📦 Example CRUD
+## 📦 Example Usage
 
 Create user:
 
@@ -94,28 +95,11 @@ Create user:
 curl -X POST http://localhost:3000/users \
 -H "Content-Type: application/json" \
 -d '{"name":"Rishal","email":"rishal@test.com"}'
-
-
-List users:
-
-curl http://localhost:3000/users
-
 ```
 
----
-
-## 📦 Example CRUD
-
-Create user:
+Fetch users:
 
 ```bash
-curl -X POST http://localhost:3000/users \
--H "Content-Type: application/json" \
--d '{"name":"Rishal","email":"rishal@test.com"}'
-
-
-List users:
-
 curl http://localhost:3000/users
 ```
 
@@ -125,37 +109,28 @@ curl http://localhost:3000/users
 
 Supports:
 
-Ctrl+C
-
-SIGTERM (Docker / Kubernetes)
+- Ctrl + C
+- SIGTERM (Docker/Kubernetes compatible)
 
 ---
 
 ## 🧱 Architecture Philosophy
 
-Separation of concerns
-
-Repository pattern
-
-Explicit module boundaries
-
-Production-first design
+- Separation of concerns
+- Explicit module boundaries
+- Repository pattern
+- Production-first design
 
 ---
 
 ## 🧭 Roadmap
 
-Centralized error middleware
-
-JWT authentication
-
-Role-based access control
-
-API versioning
-
-OpenAPI / Swagger
-
-Rate limiting
+- JWT authentication
+- Rate limiting
+- Pagination
+- Centralized error handling
+- API versioning
+- Role-based access control
 
 ---
 
@@ -165,16 +140,4 @@ MIT
 
 ---
 
-### ✅ How to use it
-
-1. Create file:
-
-```bash
-touch README.md
-```
-
-2. Open it and paste everything from the block above.
-
-3. Save.
-
----
+### ⭐ If you find this useful, consider starring the repo!

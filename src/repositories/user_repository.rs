@@ -1,7 +1,10 @@
-use mongodb::{ Collection, bson::{ doc, oid::ObjectId, DateTime } };
 use futures_util::TryStreamExt;
+use mongodb::{
+    bson::{doc, oid::ObjectId, DateTime},
+    Collection,
+};
 
-use crate::models::user_model::{ User, CreateUserRequest, UpdateUserRequest };
+use crate::models::user_model::{CreateUserRequest, UpdateUserRequest, User};
 
 #[derive(Clone)]
 pub struct UserRepository {
@@ -20,7 +23,7 @@ impl UserRepository {
             id: None,
             name: payload.name,
             email: payload.email,
-            created_at: DateTime::now(),
+            created_at: Some(DateTime::now()),
         };
 
         let result = self.collection.insert_one(&user, None).await?;
@@ -43,21 +46,23 @@ impl UserRepository {
     }
 
     pub async fn find_by_id(&self, id: &str) -> mongodb::error::Result<Option<User>> {
-        let obj_id = ObjectId::parse_str(id).map_err(|_|
-            mongodb::error::Error::from(
-                std::io::Error::new(std::io::ErrorKind::InvalidInput, "Invalid ObjectId")
-            )
-        )?;
+        let obj_id = ObjectId::parse_str(id).map_err(|_| {
+            mongodb::error::Error::from(std::io::Error::new(
+                std::io::ErrorKind::InvalidInput,
+                "Invalid ObjectId",
+            ))
+        })?;
 
         self.collection.find_one(doc! { "_id": obj_id }, None).await
     }
 
     pub async fn update(&self, id: &str, payload: UpdateUserRequest) -> mongodb::error::Result<()> {
-        let obj_id = ObjectId::parse_str(id).map_err(|_|
-            mongodb::error::Error::from(
-                std::io::Error::new(std::io::ErrorKind::InvalidInput, "Invalid ObjectId")
-            )
-        )?;
+        let obj_id = ObjectId::parse_str(id).map_err(|_| {
+            mongodb::error::Error::from(std::io::Error::new(
+                std::io::ErrorKind::InvalidInput,
+                "Invalid ObjectId",
+            ))
+        })?;
 
         let mut update_doc = doc! {};
 
@@ -69,23 +74,24 @@ impl UserRepository {
             update_doc.insert("email", email);
         }
 
-        self.collection.update_one(
-            doc! { "_id": obj_id },
-            doc! { "$set": update_doc },
-            None
-        ).await?;
+        self.collection
+            .update_one(doc! { "_id": obj_id }, doc! { "$set": update_doc }, None)
+            .await?;
 
         Ok(())
     }
 
     pub async fn delete(&self, id: &str) -> mongodb::error::Result<()> {
-        let obj_id = ObjectId::parse_str(id).map_err(|_|
-            mongodb::error::Error::from(
-                std::io::Error::new(std::io::ErrorKind::InvalidInput, "Invalid ObjectId")
-            )
-        )?;
+        let obj_id = ObjectId::parse_str(id).map_err(|_| {
+            mongodb::error::Error::from(std::io::Error::new(
+                std::io::ErrorKind::InvalidInput,
+                "Invalid ObjectId",
+            ))
+        })?;
 
-        self.collection.delete_one(doc! { "_id": obj_id }, None).await?;
+        self.collection
+            .delete_one(doc! { "_id": obj_id }, None)
+            .await?;
         Ok(())
     }
 }

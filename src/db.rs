@@ -1,11 +1,21 @@
 use mongodb::{Client, Database};
+use anyhow::{Context, Result};
 
-pub async fn init_db(uri: &str, db_name: &str) -> Database {
+pub async fn init_db(uri: &str, db_name: &str) -> Result<Database> {
+    println!("📡 Connecting to MongoDB at {}", uri);
+
     let client = Client::with_uri_str(uri)
         .await
-        .expect("Failed to connect to MongoDB");
+        .context("Failed to create Mongo client")?;
 
-    println!("✅ Connected to MongoDB");
+    // Force a ping so connection is REAL (not lazy)
+    client
+        .database("admin")
+        .run_command(mongodb::bson::doc! { "ping": 1 }, None)
+        .await
+        .context("MongoDB ping failed")?;
 
-    client.database(db_name)
+    println!("✅ MongoDB connected successfully");
+
+    Ok(client.database(db_name))
 }

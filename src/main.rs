@@ -68,10 +68,7 @@ fn init_tracing() {
     }
 }
 
-#[tokio::main(flavor = "multi_thread", worker_threads = 8)]
-async fn main() {
-    init_tracing();
-
+async fn run() {
     let config = Config::from_env();
 
     tracing::info!("📡 Connecting to MongoDB...");
@@ -111,4 +108,27 @@ async fn main() {
         .with_graceful_shutdown(shutdown_signal())
         .await
         .unwrap();
+}
+
+fn main() {
+    // Load .env before building the runtime so WORKER_THREADS is available.
+    dotenvy::dotenv().ok();
+
+    init_tracing();
+
+    let mut builder = tokio::runtime::Builder::new_multi_thread();
+
+    if let Some(n) = std::env::var("WORKER_THREADS")
+        .ok()
+        .and_then(|v| v.parse::<usize>().ok())
+    {
+        tracing::info!("⚙️  Using {} worker thread(s) from WORKER_THREADS", n);
+        builder.worker_threads(n);
+    }
+
+    builder
+        .enable_all()
+        .build()
+        .expect("Failed to build Tokio runtime")
+        .block_on(run());
 }
